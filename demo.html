@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>demo</title>
+    <style>
+        .pathfinder {
+            height: 400px;
+            width: 100%;
+            background-size: auto;
+            background-image: url("./pathfinder_forthedemo.png");
+            height: 2500px;
+            background-repeat: no-repeat;
+        }
+
+        .head {
+            padding-left: 200px;
+            padding-top: 400px;
+        }
+
+        .body {
+            padding-left: 200px;
+            padding-top: 600px;
+        }
+
+        .leg {
+            padding-left: 200px;
+            padding-top: 800px;
+        }
+
+        .bolder {
+            font-weight: bolder;
+        }
+    </style>
+</head>
+
+<body>
+    <div>假设：一枪30，头部*1.5， 身体*1，腿部*0.8</div>
+    <div>白/蓝/紫（金）头盔减伤：30%/45%/65%</div>
+    <div>白/蓝/紫(金)/橙 护甲数值：50/75/100/125</div>
+    <div>生命值为100</div>
+    <div class="bolder">选择头盔</div>
+    <!--radio:单选小圆点，name相同才能多选一，value可以传给后台-->
+    <div id="helmet">
+        <input type="radio" name="helmet" value="helmet1" checked="checked" id="helmet1"> <label
+            for="helmet1">白头</label>
+        <input type="radio" name="helmet" value="helmet2" checked="checked" id="helmet2"> <label
+            for="helmet2">蓝头</label>
+        <input type="radio" name="helmet" value="helmet3" checked="checked" id="helmet3"> <label
+            for="helmet3">紫/金头</label>
+    </div>
+    <div class="bolder">选择护甲</div>
+    <div id="armor">
+        <input type="radio" name="armor" value="armor1" checked="checked" id="armor1"> <label for="armor1">白甲</label>
+        <input type="radio" name="armor" value="armor2" checked="checked" id="armor2"> <label for="armor2">蓝甲</label>
+        <input type="radio" name="armor" value="armor3" checked="checked" id="armor3"> <label for="armor3">紫/金甲</label>
+        <input type="radio" name="armor" value="armor4" checked="checked" id="armor4"> <label for="armor4">橙甲</label>
+    </div>
+    <div class="bolder">下图展示</div>
+    <div id="selectShow">
+        <input type="radio" name="selectShow" value="selectShow1" checked="checked" id="selectShow1"> <label
+        for="selectShow1">伤害数值</label>
+        <input type="radio" name="selectShow" value="selectShow2" checked="checked" id="selectShow2"> <label
+        for="selectShow2">击杀枪数</label>
+    </div>
+    <div class="pathfinder">
+        <div class="head">
+            <input id="headDamage" type="text" style="border:0px;" value="gaga" disabled="disabled">
+        </div>
+        <div class="body">
+            <input id="bodyDamage" type="text" style="border:0px;" value="gaga" disabled="disabled">
+        </div>
+        <div class="leg">
+            <input id="legDamage" type="text" style="border:0px;" value="gaga" disabled="disabled">
+        </div>
+    </div>
+</body>
+<script>
+    var firstCondition = 'helmet3';
+    var secondCondition = 'armor4';
+    var thirdCondition = 'selectShow2';
+    var head = document.getElementById("headDamage");
+    var body = document.getElementById("bodyDamage");
+    var leg = document.getElementById("legDamage");
+    updateNumber();
+    function updateNumber() {
+        if(thirdCondition == 'selectShow1') {
+            head.value = 30 * 1.5;
+            body.value = 30 * 1;
+            leg.value = 30 * 0.8;
+            if(firstCondition == 'helmet1') {
+                head.value *= 0.7;
+            }
+            else if(firstCondition == 'helmet2') {
+                head.value *= 0.55;
+            }
+            else {
+                head.value *= 0.35;
+            }
+            head.value = parseInt(head.value)
+            body.value = parseInt(body.value)
+            leg.value = parseInt(leg.value)
+        }
+        else if(thirdCondition == 'selectShow2') {
+            var health;
+            if(secondCondition == 'armor1') {health = 150;}
+            else if(secondCondition == 'armor2') {health = 175;}
+            else if(secondCondition == 'armor3') {health = 200;}
+            else if(secondCondition == 'armor4') {health = 225;}
+            head.value = 30 * 1.5;
+            body.value = 30 * 1;
+            leg.value = 30 * 0.8;
+            if(firstCondition == 'helmet1') {
+                head.value *= 0.7;
+            }
+            else if(firstCondition == 'helmet2') {
+                head.value *= 0.55;
+            }
+            else {
+                head.value *= 0.35;
+            }
+            console.log(health);
+            console.log(head.value);
+            console.log(health/(head.value));
+            head.value = Math.ceil(health/(head.value));
+            body.value = Math.ceil(health/(body.value));
+            leg.value = Math.ceil(health/(leg.value));
+        }
+    }
+    document.getElementById('helmet').addEventListener("click", function (e) {
+        if (e.target.tagName == "INPUT") {
+            firstCondition = e.target.value
+            // console.log(firstCondition);
+            updateNumber();
+        }
+    })
+    document.getElementById('armor').addEventListener("click", function (e) {
+        if (e.target.tagName == "INPUT") {
+            secondCondition = e.target.value
+            // console.log(secondCondition);
+            updateNumber();
+        }
+    })
+    document.getElementById('selectShow').addEventListener("click", function (e) {
+    if (e.target.tagName == "INPUT") {
+            thirdCondition = e.target.value
+            // console.log(thirdCondition);
+            updateNumber();
+        }
+    })
+</script>
+
+</html>
